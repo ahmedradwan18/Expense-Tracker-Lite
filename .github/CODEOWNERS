@@ -1,0 +1,30 @@
+# Code ownership for expense tracker
+* @ahmedradwan
+
+# CI/CD workflows require review
+.github/ @ahmedradwan
+
+# Core Flutter files
+*.dart @ahmedradwan
+pubspec.yaml @ahmedradwan
+
+# Flutter specific files
+pubspec.lock @ahmedradwan
+
+# Documentation
+README.md @ahmedradwan
+*.md @ahmedradwan
+
+# Configuration files
+analysis_options.yaml @ahmedradwan
+.gitignore @ahmedradwan
+
+# Core architecture
+lib/core/ @ahmedradwan
+
+# Feature modules require review
+lib/features/ @ahmedradwan
+
+# Build configurations
+android/ @ahmedradwan
+ios/ @ahmedradwan 

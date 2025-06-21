@@ -1,5 +1,9 @@
 # 💰 Expense Tracker App
 
+[![Flutter CI](https://github.com/yourusername/expense-tracker/actions/workflows/flutter.yml/badge.svg)](https://github.com/yourusername/expense-tracker/actions/workflows/flutter.yml)
+[![PR Check](https://github.com/yourusername/expense-tracker/actions/workflows/pr-check.yml/badge.svg)](https://github.com/yourusername/expense-tracker/actions/workflows/pr-check.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A modern Flutter expense tracking application built with Clean Architecture, BLoC state management, and real-time currency conversion. Features a beautiful animated UI with comprehensive expense management capabilities.
 
 ## 📱 Screenshots & Features
@@ -263,47 +267,39 @@ Future<void> generatePDF(List<Expense> expenses) async {
 
 ### 3. 🚀 CI/CD with GitHub Actions
 
-**Automated Workflow:**
+**Essential CI/CD Pipeline:**
 
+#### Main Workflow (`.github/workflows/flutter.yml`)
 ```yaml
-# .github/workflows/flutter.yml
-name: Flutter CI/CD
-
-on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main ]
+name: Flutter CI
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
-      - run: flutter pub get
-      - run: flutter test
-      - run: flutter analyze
-      
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
-      - run: flutter build apk --release
-      - uses: actions/upload-artifact@v3
-        with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+  test:    # Code analysis and unit tests
+  build:   # Android APK build and artifact upload
+```
+
+#### PR Validation (`.github/workflows/pr-check.yml`)
+```yaml
+name: PR Check
+
+# Fast validation for pull requests
+- Code formatting checks
+- Static analysis  
+- Unit test execution
+- Build verification
 ```
 
 **CI/CD Features:**
-- ✅ Automated testing on every push
-- ✅ Code analysis and linting
-- ✅ Automated builds for releases
-- ✅ Artifact generation and storage
-- ✅ Branch protection with required checks
+- ✅ **Automated testing**: Unit tests and widget tests
+- ✅ **Code quality**: Static analysis and formatting checks
+- ✅ **Android builds**: Release APK generation
+- ✅ **PR validation**: Fast feedback on pull requests
+- ✅ **Artifact storage**: Build artifacts uploaded
+- ✅ **Branch protection**: Required status checks
+
+**Workflow Triggers:**
+- **Push to main/develop**: Full CI pipeline
+- **Pull requests**: Validation and testing
 
 ## ⚖️ Trade-offs & Assumptions
 
@@ -353,73 +349,65 @@ jobs:
 
 ## 🧪 Testing Strategy
 
-### Unit Testing
+### Current Tests Implemented
 
-**Coverage Areas:**
+#### Widget Tests (`test/widget_test.dart`)
+**Basic App Tests:**
+```dart
+// App initialization tests
+testWidgets('App should build without crashing')
+testWidgets('Dashboard should be the initial route')
+
+// UI Component Tests
+testWidgets('FloatingActionButton should be present')
+testWidgets('Tapping FAB should navigate to add expense')
+```
+
+**Test Coverage:**
+- ✅ **App initialization**: Verifies app builds without errors
+- ✅ **Basic navigation**: Tests dashboard loading and FAB navigation
+- ✅ **Widget presence**: Confirms essential UI components exist
+
+#### Tests Structure
+```
+test/
+├── widget_test.dart          # Basic widget tests (implemented)
+└── features/
+    └── add_expense/
+        └── domain/           # Domain tests (structure exists)
+```
+
+### Planned Testing Strategy
+
+**Unit Testing Areas:**
 - Business logic in use cases
-- Data models and serialization
+- Data models and serialization  
 - Repository implementations
 - BLoC state management
 
-**Example Tests:**
-```dart
-// Use case testing
-test('should return expenses when repository call is successful', () async {
-  // arrange
-  when(mockRepository.getExpenses()).thenAnswer((_) async => tExpenseList);
-  
-  // act
-  final result = await usecase(NoParams());
-  
-  // assert
-  expect(result, Right(tExpenseList));
-});
-
-// BLoC testing
-blocTest<DashboardBloc, DashboardState>(
-  'emits [DashboardLoading, DashboardLoaded] when LoadDashboardData is added',
-  build: () => dashboardBloc,
-  act: (bloc) => bloc.add(LoadDashboardData()),
-  expect: () => [DashboardLoading(), DashboardLoaded(expenses: tExpenseList)],
-);
-```
-
-### Widget Testing
-
-**UI Component Tests:**
+**Widget Testing Areas:**
 - Form validation in AddExpenseForm
 - Filter functionality in Dashboard
 - Animation behavior
 - Navigation flows
 
-**Example Widget Tests:**
-```dart
-testWidgets('should display expense list when data is loaded', (tester) async {
-  // arrange
-  when(mockBloc.state).thenReturn(DashboardLoaded(expenses: tExpenseList));
-  
-  // act
-  await tester.pumpWidget(makeTestableWidget(DashboardPage()));
-  
-  // assert
-  expect(find.byType(ExpenseCard), findsNWidgets(tExpenseList.length));
-});
+**Integration Testing:**
+- Add expense flow end-to-end
+- Currency conversion with API
+- Filter and pagination functionality
+
+### Test Execution
+
+**Local Testing:**
+```bash
+flutter test                    # Run all tests
+flutter test test/widget_test.dart  # Run specific test file
 ```
 
-### Integration Testing
-
-**End-to-End Scenarios:**
-- Add expense flow from dashboard to save
-- Currency conversion with API integration
-- Filter and pagination functionality
-- Export functionality
-
-### Test Coverage Goals
-
-- **Unit Tests**: 80%+ coverage for business logic
-- **Widget Tests**: All major UI components
-- **Integration Tests**: Critical user flows
-- **BLoC Tests**: All state transitions
+**CI/CD Testing:**
+- Automated test execution on every push and PR
+- Build verification after tests pass
+- Code analysis alongside testing
 
 ## 🐛 Known Issues & Limitations
 
