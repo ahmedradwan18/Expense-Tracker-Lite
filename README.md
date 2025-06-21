@@ -7,6 +7,10 @@
 A modern Flutter expense tracking application built with Clean Architecture, BLoC state management, and real-time currency conversion. Features a beautiful animated UI with comprehensive expense management capabilities.
 
 ## 📱 Screenshots & Features
+<img width="374" alt="Screenshot 2025-06-21 at 8 58 52 PM" src="https://github.com/user-attachments/assets/2976c2e9-74b7-476c-b14b-bc52c8794485" />
+<img width="369" alt="Screenshot 2025-06-21 at 8 59 17 PM" src="https://github.com/user-attachments/assets/a70d58f5-69fe-464d-b374-49f93e3677f6" />
+
+
 
 - **Dashboard**: Beautiful gradient header with animated balance cards and expense filtering
 - **Add Expense**: Multi-currency support with real-time conversion and category selection
